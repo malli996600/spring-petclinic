@@ -13,7 +13,7 @@ pipeline {
             steps {
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
-                    serverId: 'Jfrog',
+                    serverId: 'Jfrog_malli',
                     releaseRepo: 'maven-malli-release',
                     snapshotRepo: 'maven-malli-snapshot'
                 )
@@ -21,7 +21,7 @@ pipeline {
         }
         stage ('Exec Maven') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'Jfrog', usernameVariable: 'admin', passwordVariable: 'Malli@1997')]) {
+                withCredentials([usernamePassword(credentialsId: 'Jfrog_malli', usernameVariable: 'admin', passwordVariable: 'Malli@1997')]) {
                     rtMavenRun (
                         tool: 'maven_3.8.5',
                         pom: 'pom.xml',
@@ -43,7 +43,7 @@ pipeline {
         stage ('Publish build info') {
             steps {
                 rtPublishBuildInfo (
-                    serverId: 'Jfrog'
+                    serverId: 'Jfrog_malli'
                 )
             }
         }
