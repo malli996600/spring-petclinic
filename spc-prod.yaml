@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spc-service
+  labels:
+    app: spring-petclinic
+spec:
+  selector:
+    app: spring-petclinic
+  type: NodePort
+  ports:
+  - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spc-deployment
+  labels:
+    app: spring-petclinic
+  namespace: prod
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: spring-petclinic
+  template:
+    metadata:
+      name: spring-petclinic
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+        - image: malli9966/spring-petclinic:1
+          name: spring-petclinic
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: docker
